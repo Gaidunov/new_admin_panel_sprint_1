@@ -1,12 +1,11 @@
-from SQL_conn import *
-from pSQL_conn import *
+from SQL_conn import slct_part
+from pSQL_conn import ins_p
 from contextlib import contextmanager
 
 
 if __name__ == '__main__':
     tables = ['film_work', 'genre', 'person', 'person_film_work', 'genre_film_work']
     for table in tables:
-        print(table)
         many_dataclasses = slct_part(table)
         match table:
             case 'genre':

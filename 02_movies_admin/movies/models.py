@@ -25,13 +25,21 @@ class Genre(UUIDMixin, TimeStampedMixin):
         verbose_name = 'Жанр'
         verbose_name_plural = 'Жанры' 
 
+        indexes = [
+            models.Index(fields=['name'], name='name_idx'),
+        ] 
+
 class Person(UUIDMixin, TimeStampedMixin):
     full_name = models.CharField(_('title'), max_length=255)
 
     class Meta:
         db_table = "content\".\"person"
         verbose_name = 'Актеры'
-        verbose_name_plural = 'Актеры' 
+        verbose_name_plural = 'Актеры'
+
+        indexes = [
+            models.Index(fields=['full_name'], name='full_name_idx'),
+        ] 
 
 class Filmwork(UUIDMixin, TimeStampedMixin):
     class YearInSchool(models.TextChoices):
@@ -55,6 +63,12 @@ class Filmwork(UUIDMixin, TimeStampedMixin):
         verbose_name = 'Кинопроизведения'
         verbose_name_plural = 'Кинопроизведения' 
 
+        indexes = [
+            models.Index(fields=['title'], name='title_idx'),
+            models.Index(fields=['rating'], name='rating_idx'),
+            models.Index(fields=['type'], name='type_idx'),
+        ]
+
 class GenreFilmwork(UUIDMixin):
     film_work = models.ForeignKey('Filmwork', on_delete=models.CASCADE)
     genre = models.ForeignKey('Genre', on_delete=models.CASCADE)
@@ -64,9 +78,14 @@ class GenreFilmwork(UUIDMixin):
         db_table = "content\".\"genre_film_work" 
 
 class PersonFilmwork(UUIDMixin):
+    class frole(models.TextChoices):
+        PRODUCER = 'producer'
+        ACTOR = 'actor'
+        SCREENWRITER = 'screenwriter'
+
     film_work = models.ForeignKey('Filmwork', on_delete=models.CASCADE)
     person = models.ForeignKey('Person', on_delete=models.CASCADE)
-    role = models.TextField(_('role'), null=True)
+    role = models.CharField(_('role'),choices=frole.choices, null=True, max_length=15)
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:

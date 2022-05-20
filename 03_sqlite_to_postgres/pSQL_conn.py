@@ -12,7 +12,6 @@ dsn = {
 }
 
 def ins_p(table, many_dataclasses):
-    print('Заносим данные')
     match table:
         case 'genre':
             with psycopg2.connect(**dsn) as conn, conn.cursor() as cur:
@@ -21,7 +20,7 @@ def ins_p(table, many_dataclasses):
                 conn.commit()
                 cur.execute('select count(*) from content.genre;')
                 if cur.fetchall()[0][0] == len(many_dataclasses):
-                    print('миграция успешна')
+                    True
         case 'person':
             with psycopg2.connect(**dsn) as conn, conn.cursor() as cur:
                 query = 'INSERT INTO content.person (id, full_name, created, modified) VALUES (%s,%s,%s,%s) ON CONFLICT (id) DO NOTHING'
@@ -29,7 +28,7 @@ def ins_p(table, many_dataclasses):
                 conn.commit()
                 cur.execute('select count(*) from content.person;')
                 if cur.fetchall()[0][0] == 4166:
-                    print('миграция успешна')
+                    True
         case 'genre_film_work':
             with psycopg2.connect(**dsn) as conn, conn.cursor() as cur:
                 query = 'INSERT INTO content.genre_film_work (id, film_work_id, genre_id, created) VALUES (%s,%s,%s,%s) ON CONFLICT (id) DO NOTHING'
@@ -37,7 +36,7 @@ def ins_p(table, many_dataclasses):
                 conn.commit()
                 cur.execute('select count(*) from content.genre_film_work;')
                 if cur.fetchall()[0][0] == 2231:
-                    print('миграция успешна')
+                    True
         case 'person_film_work':
             with psycopg2.connect(**dsn) as conn, conn.cursor() as cur:
                 query = 'INSERT INTO content.person_filmwork (id, film_work_id, person_id, role, created) VALUES (%s,%s,%s,%s,%s) ON CONFLICT (id) DO NOTHING'
@@ -45,7 +44,7 @@ def ins_p(table, many_dataclasses):
                 conn.commit()
                 cur.execute('select count(*) from content.person_filmwork;')
                 if cur.fetchall()[0][0] == 5783:
-                    print('миграция успешна')
+                    True
         case 'film_work':
             with psycopg2.connect(**dsn) as conn, conn.cursor() as cur:
                 query = 'INSERT INTO content.filmwork (id, title, description, creation_date, file_path, rating, type, created, modified) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s) ON CONFLICT (id) DO NOTHING'
@@ -53,6 +52,6 @@ def ins_p(table, many_dataclasses):
                 conn.commit()
                 cur.execute('select count(*) from content.filmwork;')
                 if cur.fetchall()[0][0] == 999:
-                    print('миграция успешна')
+                    True
 
 

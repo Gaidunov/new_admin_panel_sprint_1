@@ -65,7 +65,6 @@ def slct(rq):
         return result
 
 def slct_part(table):
-    print('Вытаскиваем данные')
     many_dataclasses = []
     with conn_context(db_path) as conn:
             curs = conn.cursor()
@@ -74,7 +73,6 @@ def slct_part(table):
                 dump = curs.fetchmany(100)
                 if not dump:
                     break
-                # print(dump)
                 for line in dump:
                     line = dict(line)
                     match table:
