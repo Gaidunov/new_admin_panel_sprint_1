@@ -21,7 +21,9 @@ SECRET_KEY = 'django-insecure-ipv2^_(4lde#0!lf005vf=cs=%g0h-1$5fd(^)7ywt*7=^&%%0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+]
 
 
 # Application definition
