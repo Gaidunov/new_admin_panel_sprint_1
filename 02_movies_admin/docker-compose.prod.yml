@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    restart: always
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - static_volume:/home/pro/web/staticfiles
+    expose:
+    - 8000
+    env_file:
+      - ./config/.env.prod
+    depends_on:
+      - db
+  db:
+    image: postgres:13
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+      - ./DB:/docker-entrypoint-initdb.d/
+    environment:
+      POSTGRES_DB: "movies_database"
+      POSTGRES_USER: "app"
+      POSTGRES_PASSWORD: "123"
+      PGDATA: "/var/lib/postgresql/data"
+    # ports:
+    #   - "5432:5433"
+    # env_file:
+    #   - ./config/.env.prod.bd
+  nginx:
+    build: ./nginx
+    restart: always
+    volumes:
+      - static_volume:/home/pro/web/staticfiles
+    ports:
+      - 1337:80
+    depends_on:
+      - web
+
+volumes:
+  postgres_data:
+  static_volume:

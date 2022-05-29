@@ -10,6 +10,8 @@ class Migration(migrations.Migration):
 
     initial = True
 
+    # migrations.RunSQL("CREATE SCHEMA IF NOT EXISTS content;")
+
     dependencies = [
     ]
 
